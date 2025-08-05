@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>Autoregressive Video Generation without Vector Quantization</h1>
+<h1>NOVA: 3D Point Cloud Generation without Vector Quantization</h1>
 
 <p align="center">
 <a href="https://arxiv.org/abs/2412.14169"><img src="https://img.shields.io/badge/ArXiv-2412.14169-%23840707.svg" alt="ArXiv"></a>
@@ -17,7 +17,7 @@
 <br><br><image src="assets/model_overview.png"/>
 </div>
 
-We present **NOVA** (**NO**n-Quantized **V**ideo **A**utoregressive Model), a model that enables autoregressive image/video generation with high efficiency. **NOVA** reformulates the video generation problem as non-quantized autoregressive modeling of temporal *frame-by-frame* prediction and spatial *set-by-set* prediction. **NOVA** generalizes well and enables diverse zero-shot generation abilities in one unified model.
+We present **NOVA** (**NO**n-Quantized **V**ideo **A**utoregressive Model) extended for 3D point cloud generation, a model that enables efficient 3D point cloud generation from text prompts. **NOVA** reformulates the point cloud generation problem as non-quantized autoregressive modeling with spatial point-by-point prediction. **NOVA** generalizes well and enables diverse zero-shot 3D point cloud generation abilities in one unified model.
 
 ## 🚀News
 - ```[Jul 2025]``` Codebase refactor with **Accelerate**, **OmegaConf** and **Wandb**.
@@ -28,27 +28,28 @@ We present **NOVA** (**NO**n-Quantized **V**ideo **A**utoregressive Model), a mo
 - ```[Dec 2024]``` Released 🤗 Online Demo (<a href="https://huggingface.co/spaces/BAAI/nova-d48w1024-sdxl1024"><b>T2I</b></a>, <a href="https://huggingface.co/spaces/BAAI/nova-d48w1024-osp480"><b>T2V</b></a>)
 - ```[Dec 2024]``` Released [paper](https://arxiv.org/abs/2412.14169), [weights](#model-zoo), and [Quick Start](#2-quick-start) guide and Gradio Demo [local code](#3-gradio-demo) .
 
-## ✨Hightlights
+## ✨Highlights
 
-- 🔥 **Novel Approach**: Non-quantized video autoregressive generation.
-- 🔥 **State-of-the-art Performance**: High efficiency with state-of-the-art t2i/t2v results.
+- 🔥 **Novel Approach**: Non-quantized 3D point cloud autoregressive generation.
+- 🔥 **State-of-the-art Performance**: High efficiency with state-of-the-art text-to-3D point cloud results.
 - 🔥 **Unified Modeling**: Multi-task capabilities in a single unified model.
+- 🔥 **3D Point Cloud Specialized**: Architecture specifically optimized for 3D point cloud generation.
 
 ## 🗄️Model Zoo
 <a id="model-zoo"></a>
 > See detailed description in [Model Zoo](./docs/model_zoo.md)
 
-### Text to Image
-<a id="text-to-image-weight"></a>
+### Text to 3D Point Cloud
+<a id="text-to-pointcloud-weight"></a>
 
-| Model       | Parameters | Resolution | Data |  Weight                                                               | GenEval | DPGBench |
+| Model       | Parameters | Point Cloud Size | Data |  Weight                                                               | GenEval | DPGBench |
 |:-----------:|:----------:|:----------:|:----:|:---------------------------------------------------------------------:|:--------:|:-------:|
-| NOVA-0.6B   | 0.6B       | 512x512    | 16M  | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w1024-sd512)          | 0.75   |   81.76   |
-| NOVA-0.3B   | 0.3B       | 1024x1024  | 600M | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w768-sdxl1024)        | 0.67   |   80.60   |
-| NOVA-0.6B   | 0.6B       | 1024x1024  | 600M | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w1024-sdxl1024)       | 0.69   |   82.25   |
-| NOVA-1.4B   | 1.4B       | 1024x1024  | 600M | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w1536-sdxl1024)       | 0.71   |   83.01   |
+| NOVA-0.6B   | 0.6B       | 1024 points     | 16M  | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w1024-sd512)          | 0.75   |   81.76   |
+| NOVA-0.3B   | 0.3B       | 2048 points     | 600M | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w768-sdxl1024)        | 0.67   |   80.60   |
+| NOVA-0.6B   | 0.6B       | 2048 points     | 600M | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w1024-sdxl1024)       | 0.69   |   82.25   |
+| NOVA-1.4B   | 1.4B       | 2048 points     | 600M | [🤗 HF link](https://huggingface.co/BAAI/nova-d48w1536-sdxl1024)       | 0.71   |   83.01   |
 
-### Text to Video
+### Text to Video (Original Feature)
 <a id="text-to-video-weight"></a>
 
 | Model       | Parameters  | Resolution | Data | Weight                                                                | VBench |
@@ -60,9 +61,9 @@ We present **NOVA** (**NO**n-Quantized **V**ideo **A**utoregressive Model), a mo
   - [1.1 From Source](#from-source)
   - [1.2 From Git](#from-git)
 - [2. Quick Start](#2-quick-start)
-  - [2.1 Text to Image](#text-to-image-quickstart)
-  - [2.2 Text to Video](#text-to-video-quickstart)
-  - [2.3 Image to Video](#image-to-video-quickstart)
+  - [2.1 Text to 3D Point Cloud](#text-to-pointcloud-quickstart)
+  - [2.2 Text to Image](#text-to-image-quickstart)
+  - [2.3 Text to Video](#text-to-video-quickstart)
 - [3. Gradio Demo](#3-gradio-demo)
 - [4. Train](#4-train)
 - [5. Inference](#5-inference)
@@ -91,7 +92,39 @@ pip install git+ssh://git@github.com/baaivision/NOVA.git
 ```
 
 ## 2. Quick Start
-### 2.1 Text to Image
+### 2.1 Text to 3D Point Cloud
+<a id="text-to-pointcloud-quickstart"></a>
+
+```python
+import torch
+from diffnext.pipelines import NOVAPointCloudPipeline
+
+model_id = "BAAI/nova-d48w768-sdxl1024"
+model_args = {"torch_dtype": torch.float16, "trust_remote_code": True}
+pipe = NOVAPointCloudPipeline.from_pretrained(model_id, **model_args)
+pipe = pipe.to("cuda")
+
+prompt = "a shiba inu wearing a beret and black turtleneck."
+point_clouds = pipe(prompt, num_points=15000)
+
+# Save point cloud data
+import numpy as np
+for i, pc in enumerate(point_clouds.point_clouds):
+    np.save(f"shiba_inu_{i}.npy", pc)
+    
+# Visualize point cloud (requires matplotlib)
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+pc = point_clouds.point_clouds[0]
+ax.scatter(pc[:, 0], pc[:, 1], pc[:, 2], c=point_clouds.colors[0], s=1)
+plt.savefig("shiba_inu_pointcloud.png")
+plt.show()
+```
+
+### 2.2 Text to Image
 <a id="text-to-image-quickstart"></a>
 
 ```python
@@ -109,7 +142,7 @@ image = pipe(prompt).images[0]
 image.save("shiba_inu.jpg")
 ```
 
-### 2.2  Text to Video
+### 2.3  Text to Video
 <a id="text-to-video-quickstart"></a>
 
 ```python
@@ -151,41 +184,12 @@ image = pipe(prompt, max_latent_length=1).frames[0, 0]
 export_to_image(image, "jellyfish.jpg")
 ```
 
-### 2.3  Image to Video
-<a id="image-to-video-quickstart"></a>
-
-```python
-import os, torch, PIL.Image, numpy as np
-from diffnext.pipelines import NOVAPipeline
-from diffnext.utils import export_to_image, export_to_video
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-
-model_id = "BAAI/nova-d48w1024-osp480"
-low_memory = False
-
-model_args = {"torch_dtype": torch.float16, "trust_remote_code": True}
-pipe = NOVAPipeline.from_pretrained(model_id, **model_args)
-
-if low_memory:
-    # Use CPU model offload routine and expandable allocator if OOM.
-    pipe.enable_model_cpu_offload()
-else:
-    pipe = pipe.to("cuda")
-
-prompt = "Many spotted jellyfish pulsating under water."
-
-# Step1: Generate or select an image that matches the resolution 768x480.
-image = pipe(prompt, max_latent_length=1).frames[0, 0]
-export_to_image(image, "jellyfish.jpg")
-
-# Step2: Use this image to generate subsequent frames.
-video = pipe(prompt, image=np.array(PIL.Image.open("jellyfish.jpg")), max_latent_length=9).frames[0]
-export_to_video(video, "jellyfish.mp4", fps=12)
-```
-
 ## 3. Gradio Demo
 
 ```bash
+# For text-to-3D-pointcloud demo
+python scripts/app_nova_pointcloud.py --model "BAAI/nova-d48w1024-sdxl1024" --device 0
+
 # For text-to-image demo
 python scripts/app_nova_t2i.py --model "BAAI/nova-d48w1024-sdxl1024" --device 0
 
@@ -212,6 +216,8 @@ python scripts/app_nova_t2v.py --model "BAAI/nova-d48w1024-osp480" --device 0
 - [ ] Prompt Writer
 - [ ] Larger model size
 - [ ] Additional downstream tasks: Image editing, Video editing, Controllable generation
+- [ ] 3D Point Cloud editing features
+- [ ] Point cloud to point cloud transformation
 
 ## Citation
 If you find this repository useful, please consider giving a star ⭐ and citation 🦖:
