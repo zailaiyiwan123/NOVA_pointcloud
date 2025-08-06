@@ -14,7 +14,7 @@
 
 [BUPT](https://www.bupt.edu.cn)<sup>1</sup>, [ICT-CAS](http://english.ict.cas.cn)<sup>2</sup>, [DLUT](https://en.dlut.edu.cn)<sup>3</sup>, [BAAI](https://www.baai.ac.cn/en)<sup>4</sup><br>
 <sup>*</sup> Equal Contribution, <sup>†</sup> Corresponding Author
-<br><br><image src="assets/model_overview.png"/>
+<br><br><image src="assets/537104209024d050d2853fade7d998b.png"/>
 </div>
 
 We present **NOVA** (**NO**n-Quantized **V**ideo **A**utoregressive Model) extended for 3D point cloud generation, a model that enables efficient 3D point cloud generation from text prompts. **NOVA** reformulates the point cloud generation problem as non-quantized autoregressive modeling with spatial point-by-point prediction. **NOVA** generalizes well and enables diverse zero-shot 3D point cloud generation abilities in one unified model.
